@@ -1,0 +1,23 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "This is \"Store\" app which functions like purchasing and updating products available",
+  "main": "products.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SLenKsP/Bamazon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SLenKsP/Bamazon/issues"
+  },
+  "homepage": "https://github.com/SLenKsP/Bamazon#readme",
+  "dependencies": {
+    "inquirer": "^7.0.0",
+    "inquirer-confirm": "^2.0.7"
+  }
+}
