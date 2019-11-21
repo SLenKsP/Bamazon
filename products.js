@@ -10,7 +10,7 @@ let connection = mysql.createConnection({
 connection.connect((err) => {
     if (err) throw err;
     console.log(`Connected as id: ${ connection.threadId }\n`);
-    console.log(`Thanks For visiting "BAMAZON'`);
+    console.log(`---------- Thanks For visiting "BAMAZON' ----------\n`);
     confirm({
         question: "Would you like to see some of our fast selling products?",
         default: true
@@ -18,7 +18,7 @@ connection.connect((err) => {
 });
 
 let getProductsInfo = () => {
-    console.log("Displaying all products \n");
+    console.log("\n Displaying Fast Selling products \n");
     connection.query("SELECT * FROM bamazon_db.products", (err, res) => {
         if (err) throw err;
         res.map((item) => {
@@ -57,13 +57,13 @@ connection.query("SELECT product_name FROM bamazon_db.products", (err, res) => {
 
 function productPurchaseConfirmation() {
     confirm({
-        question: "Would you like to purchase?",
+        question: "\n Would you like to purchase?",
         default: true
     }).then(purchaseProduct, declinePurchase);
 };
 
 function purchaseProduct() {
-    console.log(`Yes, I would like to purchase`);
+    console.log(`\n Yes, I would like to purchase \n`);
     requestedProductID();
 };
 let selectedProdId;
@@ -91,7 +91,7 @@ let requestedQuantity = () => {
     inquirer.prompt([{
         type: "number",
         name: "quantity",
-        message: "How many of these you would like to purchase?"
+        message: "How many of these you would like to purchase?\n "
     }]).then((ans) => {
         selectedQuantity = ans.quantity;
         console.log(`The quantity you have requested is: ${ selectedQuantity }\n
@@ -101,7 +101,7 @@ let requestedQuantity = () => {
     });
 };
 let checkAvailableQuantity = () => {
-    console.log(`Selected Prod ID: ${selectedProdId}`);
+    // console.log(`Selected Prod ID: ${selectedProdId}`);
     connection.query(`SELECT stock_quantity FROM bamazon_db.products WHERE product_id = ${ selectedProdId }`, (err, res) => {
         if (err) throw err;
         availableQuantity = res[0].stock_quantity;
@@ -145,7 +145,7 @@ async function getSelectedProductInfo(prodID) {
         console.log(`\n
             Product Name: ${selectedProdName } \n
             Product SKU: ${res[0].product_id } \n
-            Price: ${productPrice };
+            Price: $${productPrice };
             `);
     });
     setTimeout(requestedQuantity, 1000);
@@ -157,15 +157,16 @@ let checkout = () => {
     console.log(`\n Your Order information : \n
     Product Name: ${selectedProdName } \n
     Product SKU: ${selectedProdId } \n
-    Item Price: $ ${productPrice }\n
+    Item Price: $${productPrice }\n
     -----------------------------\n
-    Total: $ ${totalPrice(productPrice, selectedQuantity) } (${ productPrice } * ${ selectedQuantity})\n`);
+    Total: $${totalPrice(productPrice, selectedQuantity) } $(${ productPrice } * ${ selectedQuantity })\n
+    -----------------------------\n`);
     confirm({
         question: "\n Place Order?"
     }).then(placeOrder, exitStore);
 };
 let placeOrder = () => {
-    console.log(`\n Your order has been placed!\n `);
+    console.log(`\n Your order has been placed! Thank you for shopping with us!\n `);
     updatedQuantity = availableQuantity - selectedQuantity;
     connection.query(`UPDATE products
                  SET stock_quantity = ${updatedQuantity }
