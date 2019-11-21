@@ -120,22 +120,6 @@ let checkAvailableQuantity = () => {
         return availableQuantity;
     });
 };
-// let getProductName = () => {
-//     connection.query(`SELECT product_name FROM bamazon_db.products
-//     WHERE product_id = ${selectedProdId }`, (err, res) => {
-//         if (err) throw err;
-//         selectedProdName = res.product_name;
-//         console.log(`Product Price is: ${ selectedProdName }`);
-//     });
-// }
-// let getPrice = () => {
-//     connection.query(`SELECT price FROM bamazon_db.products
-//     WHERE product_id = ${selectedProdId }`, (err, res) => {
-//         if (err) throw err;
-//         productPrice = res.price
-//         console.log(`Product Price is: ${ productPrice }`);
-//     });
-// };
 async function getSelectedProductInfo(prodID) {
     connection.query(`SELECT product_name, price, product_id FROM bamazon_db.products
     WHERE product_id = ${prodID }`, (err, res) => {
