@@ -21,9 +21,10 @@ let getProductsInfo = () => {
     console.log("\n Displaying Fast Selling products \n");
     connection.query("SELECT * FROM bamazon_db.products", (err, res) => {
         if (err) throw err;
-        res.map((item) => {
-            console.table(`${ item.product_id } | ${ item.product_name } | ${ item.department_name } | $ ${ item.price } | ${ item.stock_quantity }`);
-        });
+        // res.map((item) => {
+        //     console.table(`${ item.product_id } | ${ item.product_name } | ${ item.department_name } | $ ${ item.price } | ${ item.stock_quantity }`);
+        // });
+        console.table(res);
 
         console.log("-----------------------------------");
         productPurchaseConfirmation();
@@ -46,6 +47,7 @@ connection.query("SELECT product_id FROM bamazon_db.products", (err, res) => {
     res.map(function (item) {
         productsWithId.push(item.product_id);
     });
+    
 });
 let productsWithName = [];
 connection.query("SELECT product_name FROM bamazon_db.products", (err, res) => {
