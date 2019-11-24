@@ -9,8 +9,8 @@ let connection = mysql.createConnection({
 });
 connection.connect((err) => {
     if (err) throw err;
-    console.log(`Connected as id: ${ connection.threadId }\n`);
-    console.log(`---------- Thanks For visiting "BAMAZON' ----------\n`);
+    console.log(`Connected as id: ${ connection.threadId }\n
+    -- -- -- -- --Thanks For visiting "BAMAZON' ----------\n`);
     confirm({
         question: "Would you like to see some of our fast selling products?",
         default: true
@@ -47,7 +47,7 @@ connection.query("SELECT product_id FROM bamazon_db.products", (err, res) => {
     res.map(function (item) {
         productsWithId.push(item.product_id);
     });
-    
+
 });
 let productsWithName = [];
 connection.query("SELECT product_name FROM bamazon_db.products", (err, res) => {
@@ -109,7 +109,7 @@ let checkAvailableQuantity = () => {
         availableQuantity = res[0].stock_quantity;
         console.log(`Available Quantity: ${ availableQuantity }`);
         if (selectedQuantity > availableQuantity) {
-            console.log(`Sorry we ran out of stock of ${ selectedProdName } `);
+            console.log(`Insufficient quantity of ${ selectedProdName } !`);
             confirm({
                 question: `Would you like to purchase another product?`
             }).then(purchaseProduct, () => {})
