@@ -16,27 +16,34 @@ connection.connect((err) => {
     }).then(getAuthorization, exitSection);
     // doActivity();
 });
+let authCount = 0;
 let getAuthorization = () => {
     let authCode = 0000;
     inquirer.prompt({
         type: Number,
         name: "auth",
-        message: "Enter your authorization Code\n"
+        message: "Enter your authorization Code \n"
     }).then((answer) => {
         if (parseInt(answer.auth) === authCode) {
-            console.log(`Welcome to Manager section!`);
+            console.log(`\nWelcome to Manager section!`);
             doActivity();
         } else {
-            getAuthorization();
+            authCount++;
+            if (authCount === 3) {
+                console.log(`You are not authorized!`);
+                exitSection();
+            } else {
+                getAuthorization();
+            };
         };
     });
 }
 
 let doActivity = () => {
+    console.log(`\nPlease Select an Activity you would like to perform\n`);
     inquirer.prompt({
-        type: "list",
+        type: "rawlist",
         name: "activity",
-        Message: "Please Select an Activity you would like to perform",
         choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product", "Nothing"],
         default: "View Products for Sale"
     }).then((choice) => {
@@ -91,16 +98,15 @@ connection.query("SELECT product_name FROM bamazon_db.products", (err, res) => {
 });
 let selectedProduct;
 let addtoInventory = () => {
-    console.log(`\nAdd stock to Product: \n---------------------`);
+    console.log(`\nAdd stock to Product: \n---------------------\n Select the product from the list below:\n`);
     inquirer.prompt({
         type: "rawlist",
         name: "Item",
-        Message: "Select the product",
         choices: productName,
         default: productName[0]
     }).then((answer) => {
         selectedProduct = answer.Item;
-        console.log(`You have selected ${ selectedProduct }`);
+        console.log(`\nYou have selected "${ selectedProduct }"\n`);
         howManyQuantity(selectedProduct);
     });
 }
@@ -166,7 +172,7 @@ let howManyQuantity = (product) => {
     SET stock_quantity = ${totalQuantity}
     WHERE product_name = "${product}";
     `);
-        console.log(`\nAdded ${ ans.quantity } quantities successfully for ${ product }\n\nUpdated Product Info:\n-----------------------`);
+        console.log(`\n${ ans.quantity } quantities added successfully for "${ product }"\n\nUpdated Product Info:\n-----------------------`);
         connection.query(`SELECT * FROM bamazon_db.products WHERE product_name = "${ product }"`, (err, res) => {
             if (err) throw err;
             console.table(res);
