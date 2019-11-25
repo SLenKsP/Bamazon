@@ -11,10 +11,11 @@ connection.connect((err) => {
     if (err) throw err;
     console.log(`Connected as id: ${ connection.threadId }\n
     -- -- -- -- --Thanks For visiting "BAMAZON' ----------\n`);
-    confirm({
-        question: "Would you like to see some of our fast selling products?",
-        default: true
-    }).then(getProductsInfo, exitStore);
+    // confirm({
+    //     question: "Would you like to see some of our fast selling products?",
+    //     default: true
+    // }).then(getProductsInfo, exitStore);
+    getProductsInfo();
 });
 
 let getProductsInfo = () => {
@@ -41,6 +42,13 @@ let displayProducts = () => {
         console.log("-----------------------------------");
     });
 };
+let selectedProdId;
+let selectedProdName;
+let selectedQuantity;
+let availableQuantity;
+let productSaleBeforeSelling;
+let updatedSaleTotal;
+let productPrice;
 let productsWithId = [];
 connection.query("SELECT product_id FROM bamazon_db.products", (err, res) => {
     if (err) throw err;
@@ -68,11 +76,7 @@ function purchaseProduct() {
     console.log(`\n Yes, I would like to purchase \n`);
     requestedProductID();
 };
-let selectedProdId;
-let selectedProdName;
-let selectedQuantity;
-let availableQuantity;
-let productPrice;
+
 let requestedProductID = () => {
     inquirer.prompt({
         type: "rawlist",
@@ -85,10 +89,9 @@ let requestedProductID = () => {
         // console.log(`You selected : ${ answer.product_id }`);
         getSelectedProductInfo(selectedProdId);
 
-        // return selectedProdId;
+        return selectedProdId;
     });
 };
-
 let requestedQuantity = () => {
     inquirer.prompt([{
         type: "number",
@@ -122,22 +125,28 @@ let checkAvailableQuantity = () => {
         return availableQuantity;
     });
 };
+
+
 async function getSelectedProductInfo(prodID) {
-    connection.query(`SELECT product_name, price, product_id FROM bamazon_db.products
+    connection.query(`SELECT product_name, price, product_sales, product_id FROM bamazon_db.products
     WHERE product_id = ${prodID }`, (err, res) => {
         if (err) throw err;
         selectedProdName = res[0].product_name;
         productPrice = res[0].price;
+        productSaleBeforeSelling = res[0].product_sales;
         console.log(`\n
             Product Name: ${selectedProdName } \n
             Product SKU: ${res[0].product_id } \n
             Price: $${productPrice };
             `);
+            console.log(`sale when product was just selected ! ${ productSaleBeforeSelling }`);
     });
     setTimeout(requestedQuantity, 1000);
 };
+let productSaleTotal;
 let totalPrice = (price, quantity) => {
-    return parseFloat(price * quantity).toFixed(2);
+    productSaleTotal = parseFloat(price * quantity).toFixed(2);
+    return productSaleTotal;
 };
 let checkout = () => {
     console.log(`\n Your Order information : \n
@@ -145,7 +154,7 @@ let checkout = () => {
     Product SKU: ${selectedProdId } \n
     Item Price: $${productPrice }\n
     -----------------------------\n
-    Total: $${totalPrice(productPrice, selectedQuantity) } $(${ productPrice } * ${ selectedQuantity })\n
+    Total: $${totalPrice(productPrice, selectedQuantity) } ($${ productPrice } * ${ selectedQuantity })\n
     -----------------------------\n`);
     confirm({
         question: "\n Place Order?"
@@ -154,8 +163,11 @@ let checkout = () => {
 let placeOrder = () => {
     console.log(`\n Your order has been placed! Thank you for shopping with us!\n `);
     updatedQuantity = availableQuantity - selectedQuantity;
+    updatedSaleTotal = parseFloat(productSaleBeforeSelling) + parseFloat(productSaleTotal);
+    console.log(`Product Sale after purchase: ${ updatedSaleTotal }\n Total Price: ${ productSaleTotal }`);
     connection.query(`UPDATE products
-                 SET stock_quantity = ${updatedQuantity }
+                 SET stock_quantity = ${updatedQuantity },
+                 product_sales = ${parseFloat(updatedSaleTotal)}
                  WHERE product_id = ${selectedProdId };
                  `);
     process.exit();
