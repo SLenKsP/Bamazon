@@ -29,7 +29,7 @@ let viewProductSalesByDepartment = () => {
     totalSalesByDepartment();
 
 }
-let createNewDepartMent = () => {
+let createNewDepartment = () => {
     console.log(`\nAdd New Department: \n---------------------\n`);
     doAnotherActivity();
 }
