@@ -110,16 +110,16 @@ let checkAvailableQuantity = () => {
     connection.query(`SELECT stock_quantity FROM bamazon_db.products WHERE product_id = ${ selectedProdId }`, (err, res) => {
         if (err) throw err;
         availableQuantity = res[0].stock_quantity;
-        console.log(`Available Quantity: ${ availableQuantity }`);
+        console.log(`\nAvailable Quantity: ${ availableQuantity }\n`);
         if (selectedQuantity > availableQuantity) {
             console.log(`Insufficient quantity of ${ selectedProdName } !`);
             confirm({
-                question: `Would you like to purchase another product?`
+                question: `\nWould you like to purchase another product?`
             }).then(purchaseProduct, exitStore)
         } else {
             console.log(`We have enough quantity!\n`);
             confirm({
-                question: "Would you like to go ahead with the purchase?",
+                question: "\nWould you like to go ahead with the purchase?",
             }).then(checkout, exitStore);
         };
         return availableQuantity;
@@ -184,6 +184,6 @@ function wantToPurchase() {
     purchaseProduct();
 };
 let exitStore = () => {
-    console.log(`\n Thanks for visiting!\n`);
+    console.log(`\nThanks for visiting Bamazon!\n`);
     process.exit();
 }

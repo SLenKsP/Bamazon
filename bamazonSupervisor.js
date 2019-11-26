@@ -14,7 +14,7 @@ connection.connect((err) => {
 });
 
 let doSupervisorActivity = () => {
-    console.log(`\nWelcome to suervisor console!\n Select activity:`);
+    console.log(`\nWelcome to supervisor console!\n Select activity:`);
     inquirer.prompt({
         type: "rawlist",
         name: "activity",
