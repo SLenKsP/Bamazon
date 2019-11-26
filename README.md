@@ -1,6 +1,17 @@
 # Bamazon
 
-This is "Store" app which functions like purchasing and updating products available
+This is "Store" app which has:
+
+- Customer section where products can be purchased
+
+- Manager section where different activities can be performed like view products for sale, check inventory, add products etc
+
+- Supervisor section which allows to view sales by department and add new department
+
+## Technologies used
+
+- mySQL
+- Node JS
 
 ## Examples (screenshots)
 
