@@ -115,7 +115,7 @@ let checkAvailableQuantity = () => {
             console.log(`Insufficient quantity of ${ selectedProdName } !`);
             confirm({
                 question: `Would you like to purchase another product?`
-            }).then(purchaseProduct, () => {})
+            }).then(purchaseProduct, exitStore)
         } else {
             console.log(`We have enough quantity!\n`);
             confirm({
