@@ -139,7 +139,6 @@ async function getSelectedProductInfo(prodID) {
             Product SKU: ${res[0].product_id } \n
             Price: $${productPrice };
             `);
-            console.log(`sale when product was just selected ! ${ productSaleBeforeSelling }`);
     });
     setTimeout(requestedQuantity, 1000);
 };
@@ -164,7 +163,6 @@ let placeOrder = () => {
     console.log(`\n Your order has been placed! Thank you for shopping with us!\n `);
     updatedQuantity = availableQuantity - selectedQuantity;
     updatedSaleTotal = parseFloat(productSaleBeforeSelling) + parseFloat(productSaleTotal);
-    console.log(`Product Sale after purchase: ${ updatedSaleTotal }\n Total Price: ${ productSaleTotal }`);
     connection.query(`UPDATE products
                  SET stock_quantity = ${updatedQuantity },
                  product_sales = ${parseFloat(updatedSaleTotal)}
